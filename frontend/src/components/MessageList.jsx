@@ -34,7 +34,7 @@ const MessageList = () => {
 
                     <div className='flex flex-col gap-1.5'>
 
-                        <h1 className='text-[20px] font-semibold text-slate-200 tracking-tight'>NexoraAI</h1>
+                        <h1 className='text-[20px] font-semibold text-slate-200 tracking-tight'>EroAI</h1>
 
                         <p className='text-[15px] font-semibold text-slate-400 tracking-tight'>How can I help you?</p>
 
