@@ -1,149 +1,161 @@
-import { getModel } from "../config/llmModels.js"
+import { getModel } from "../config/llmModels.js";
 
-export const codingAgent = async (state) =>{
-    const intentllm = await getModel('intent')
-    const llm = await getModel('coding')
+export const codingAgent = async (state) => {
+    try {
+        const intentllm = await getModel("intent");
+        const llm = await getModel("coding");
 
+        const intentResponse = await intentllm.invoke(`
+            You are an intent classifier.
 
+            Return ONLY one of these values.
 
-    const intentResponse = await intentllm.invoke(`
-        You are an intent classifier.
+            CODE_GENERATION
+            CODE_REVIEW
+            CODE_EXPLANATION
+            DEBUGGING
+            OPTIMIZATION
+            CONVERSION
+            DOCUMENTATION
 
-        Return ONLY one of these values.
+            User Request:
+            ${state.prompt}
+        `);
 
-        CODE_GENERATION
-        CODE_REVIEW
-        CODE_EXPLANATION
-        DEBUGGING
-        OPTIMIZATION
-        CONVERSION
-        DOCUMENTATION
+        const intent = intentResponse.content;
 
-        User Request:
-        ${state.prompt}
-        `)
+        if (intent == "CODE_GENERATION") {
 
-    const intent = intentResponse.content
+            const prompt = `
+            You are EroAI Coding Agent.
 
-    if(intent == 'CODE_GENERATION'){
-        const prompt = `
-        You are EroAI Coding Agent.
+            Generate the requested project.
 
-        Generate the requested project.
+            Default stack:
+            - HTML
+            - CSS
+            - JavaScript
 
-        Default stack:
-        - HTML
-        - CSS
-        - JavaScript
+            Use React / Next.js / Vue ONLY if explicitly requested.
 
-        Use React / Next.js / Vue ONLY if explicitly requested.
+            Rules:
 
-        Rules:
+            - Responsive
+            - Modern UI
+            - CSS Variables
+            - Flexbox/Grid
+            - Smooth Scroll
+            - Hover Effects
+            - Beautiful spacing
+            - Single page unless user asks otherwise.
 
-        - Responsive
-        - Modern UI
-        - CSS Variables
-        - Flexbox/Grid
-        - Smooth Scroll
-        - Hover Effects
-        - Beautiful spacing
-        - Single page unless user asks otherwise.
+            Images:
+            ======================
 
-    Images:
-    ======================
+            Always use real unsplash images
+            Never use placeholders
 
-    Always use real unsplash images
-    Never use placeholders
+            Return ONLY valid JSON.
 
-        Return ONLY valid JSON.
+            Schema:
 
-        Schema:
-
-        {
-        "files": [
             {
-            "name": "index.html",
-            "content": "..."
-            },
-            {
-            "name": "style.css",
-            "content": "..."
-            },
-            {
-            "name": "script.js",
-            "content": "..."
+                "files": [
+                    {
+                        "name": "index.html",
+                        "content": "..."
+                    },
+                    {
+                        "name": "style.css",
+                        "content": "..."
+                    },
+                    {
+                        "name": "script.js",
+                        "content": "..."
+                    }
+                ]
             }
-        ]
+
+            Rules:
+
+            - Output must start with {
+            - Output must end with }
+            - No markdown
+            - No explanation
+            - No extra text
+            - No \`\`\`
+            - Never mention intent
+
+            User Request:
+            ${state.prompt}
+            `;
+
+            const res = await llm.invoke(prompt);
+
+            const data = JSON.parse(res.content);
+
+            return {
+                ...state,
+                aiResponse: "Code Generated Successfully",
+                artifacts: [
+                    {
+                        id: Date.now(),
+                        type: "Project",
+                        title: state.prompt,
+                        files: data.files || [],
+                    }
+                ]
+            };
         }
 
-        Rules:
+        const res = await llm.invoke(`
+            The user's request is:
 
-        - Output must start with {
-        - Output must end with }
-        - No markdown
-        - No explanation
-        - No extra text
-        - No \`\`\`
-        - Never mention intent
+            ${intent}
 
-        User Request:
-        ${state.prompt}
+            Return Markdown only.
 
-        `
+            Never generate project files.
 
-        const res = await llm.invoke(prompt)
+            Use headings like:
 
-        const data = JSON.parse(res.content)
-        
+            # Overview
+
+            ## Explanation
+
+            ## Problems
+
+            ## Improvements
+
+            ## Best Practices
+
+            ## Optimized Code (if needed)
+
+            User Request:
+
+            ${state.prompt}
+        `);
+
+        const data = res.content;
+
         return {
             ...state,
-            aiResponse:'Code Generated Successfully',
-            artifacts:[
-                {
-                    id:Date.now(),
-                    type:'Project',
-                    title:state.prompt,
-                    files:data.files || [],
-                }
-            ]
-        }
+            aiResponse: data,
+            artifacts: [],
+        };
+
+    } catch (error) {
+
+        console.error("\n❌ Coding Agent Error:");
+        console.error("Message:", error.message);
+        console.error("Status:", error.status);
+        console.error("Stack:", error.stack);
+
+        return {
+            ...state,
+            aiResponse:
+                "Sorry, the coding AI service is temporarily unavailable. Please try again later.",
+            artifacts: [],
+        };
     }
-
-
-    const res = await llm.invoke(`
-        The user's request is:
-
-        ${intent}
-
-        Return Markdown only.
-
-        Never generate project files.
-
-        Use headings like:
-
-        # Overview
-
-        ## Explanation
-
-        ## Problems
-
-        ## Improvements
-
-        ## Best Practices
-
-        ## Optimized Code (if needed)
-
-        User Request:
-
-        ${state.prompt}
-        `)
-
-        const data = res.content
-        return {
-            ...state,
-            aiResponse:data,
-            artifacts:[],
-        }
-
-
-}
+};
