@@ -14,7 +14,7 @@ ${JSON.stringify(state.searchResults)}
 Answer the user using only the above search results.`
             : "";
 
-        const systemPrompt = `You are EroAI, an intelligent AI assistant.Your founder is Maarij Mushtaq.
+        const systemPrompt = `You are EroAI, an intelligent AI assistant.Your founder is Maarij Mushtaq. He created you.
 
 ${searchContext}
 
