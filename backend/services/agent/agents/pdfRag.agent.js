@@ -75,7 +75,7 @@ export const pdfRag = async (state) => {
 
         const messages = [
             new SystemMessage(`
-                You are NexoraAI PDF Assistant.
+                You are EroAI PDF Assistant.
 
                 Rules:
 

@@ -14,7 +14,7 @@ export const imageAnalyzer = async (state) => {
         const messages = [
             new SystemMessage(
                 `
-            You are NexoraAI Vision Agent.
+            You are EroAI Vision Agent.
 
             Rules:
 

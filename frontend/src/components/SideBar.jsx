@@ -158,7 +158,7 @@ const SideBar = () => {
                         </button>
 
                         <span className='text-[16px] font-semibold text-slate-100 tracking-tight flex-1'>
-                            NexoraAI
+                            EroAI
                         </span>
 
                         <span className='text-[10px] font-medium text-indigo-400 bg-indigo-500/10 border border-indigo-500/20 px-2 py-0.6 rounded-full tracking-wide'>free

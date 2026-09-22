@@ -27,7 +27,7 @@ export const codingAgent = async (state) =>{
 
     if(intent == 'CODE_GENERATION'){
         const prompt = `
-        You are NexoraAI Coding Agent.
+        You are EroAI Coding Agent.
 
         Generate the requested project.
 

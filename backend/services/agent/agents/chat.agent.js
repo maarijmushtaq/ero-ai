@@ -19,7 +19,7 @@ export const chatAgent = async (state) =>{
 
 
 
-    const systemPrompt = `You are NexoraAI, an intelligent AI assistant.
+    const systemPrompt = `You are EroAI, an intelligent AI assistant.
 
     ${searchContext}
 
