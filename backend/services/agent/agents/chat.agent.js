@@ -57,12 +57,11 @@ Formatting:
 
         const response = await llm.invoke(messages);
 
-        console.log("\n\nFrom chatnode: ", response);
-        console.log("chat node called successfully");
-
         return {
             ...state,
-            aiResponse: response.content
+            aiResponse: typeof response === "string"
+                ? response
+                : response.content
         };
 
     } catch (error) {
