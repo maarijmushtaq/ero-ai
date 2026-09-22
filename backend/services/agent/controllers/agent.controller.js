@@ -20,6 +20,9 @@ export const agent=async(req,res)=>{
 
         const response = result.aiResponse
 
+        console.log("TYPE:", typeof response); 
+        console.log("RESPONSE:", response);
+
         await addMessage(conversationId,'user',prompt)
 
         await addMessage(conversationId,'assistant',response)
