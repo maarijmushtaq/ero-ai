@@ -1,5 +1,5 @@
 import { ChatGroq } from "@langchain/groq";
-import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
+import { MistralAI } from "@langchain/mistralai";
 import { ChatOpenRouter } from "@langchain/openrouter";
 
 
@@ -10,30 +10,36 @@ const groq = new ChatGroq({
 })
 
 
-const gemini = new ChatGoogleGenerativeAI({
-    apiKey: process.env.GOOGLE_API_KEY,
-    model: "gemini-3.6-flash",
+const mistral = new MistralAI({
+    apiKey: process.env.MISTRAL_API_KEY,
+    model: "ministral-8b-latest",
     temperature: 0,
 })
 
+
 const openrouter = new ChatOpenRouter({
-  model: "deepseek/deepseek-chat",
-  temperature: 0,
-  maxTokens: 2500,
+    model: "deepseek/deepseek-chat",
+    temperature: 0,
+    maxTokens: 2500,
 });
 
 
-export const getModel=async (agent)=>{
+export const getModel = async (agent) => {
+
     switch(agent){
+
         case "chat":
-            return gemini;
+            return mistral;
+
         case "search":
-            return gemini;
+            return mistral;
+
         case "coding":
             return openrouter;
+
         case "imageAnalyzer":
-            return gemini;
-        
+            return mistral;
+
         default:
             return groq
     }
