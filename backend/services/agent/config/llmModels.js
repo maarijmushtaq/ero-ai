@@ -28,7 +28,7 @@ export const getModel=async (agent)=>{
         case "chat":
             return gemini;
         case "search":
-            return groq;
+            return gemini;
         case "coding":
             return openrouter;
         case "imageAnalyzer":
