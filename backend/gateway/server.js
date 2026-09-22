@@ -36,7 +36,7 @@ app.use(
 
 
 app.get('/',(req,res)=>{
-    res.json({message:'Hello from gateway'})
+    res.json({message:'Hello from updated gateway'})
 })
 
 
